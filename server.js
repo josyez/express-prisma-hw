@@ -9,14 +9,12 @@ export default async function createServer(){
     const app = express();
 
     app.use(express.json());
-    
+
     app.use("/auth", authRoutes)
     // app.use("/user", userRouter())
     setupJWTStrategy(passport);
     app.use("/recipe", passport.authenticate("jwt", {
-        session: false,
-    }),
-     recipeRouter())
+        session: false, }), recipeRouter())
 
     
 

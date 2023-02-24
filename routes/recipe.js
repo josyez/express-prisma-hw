@@ -9,6 +9,7 @@ export default function recipeRouter() {
     const allRecipes = await prisma.recipe.findMany({
       where: {
         userId: 1
+        //request.user.id
       },
       include: {
         user: true,
@@ -46,7 +47,7 @@ export default function recipeRouter() {
   router.post("/", async (request, response) => {
     const newRecipe = await prisma.recipe.create({
       data: {
-        name: request.body.recipe,
+        name: request.body.name,
         userId: 1,
         description: request.body.description
       },
@@ -58,6 +59,18 @@ export default function recipeRouter() {
     });
   });
 
+
+  router.delete("/:recipeId", async (request, response) => {
+    const deleteRecipe = await prisma.recipe.delete({
+        where: {
+            id: parseInt(request.params.recipeId)
+        }
+    });
+    response.status(200).json({
+        success: true, 
+        message: "you deleted a recipe"
+    })
+})
 
 //   router.put("/:recipeId", async (request, response) => {
 //     const updateRecipe = await prisma.recipe.update({
@@ -76,17 +89,7 @@ export default function recipeRouter() {
 //     });
 // })
 
-// router.delete("/:recipeId", async (request, response) => {
-//     const deleteRecipe = await prisma.recipe.delete({
-//         where: {
-//             id: parseInt(request.params.recipeId)
-//         }
-//     });
-//     response.status(200).json({
-//         success: true, 
-//         message: "recipe deleted!"
-//     })
-// })
+
 
   return router;
 }
